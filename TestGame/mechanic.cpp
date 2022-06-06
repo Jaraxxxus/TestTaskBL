@@ -19,8 +19,8 @@ void mechanic::tick(std::list<entity*>& entities)
 {
 
 
-	input(entities);
-	ENlogic(entities);
+	input(entities);    
+	ENlogic(entities); //enemy move 
 	p->update();
 	e->update();
 	
@@ -31,8 +31,8 @@ void mechanic::tick(std::list<entity*>& entities)
 		for (auto b : entities)
 		{
 			if ((a->name == "BlueBullet" || a->name == "RedBullet") && (b->name == "BlueBullet" || b->name == "RedBullet"))
-				continue;
-			if (a->getRect().intersects(b->getRect()))
+				continue; // if a & b is bullet
+			if (a->getRect().intersects(b->getRect())) // if a & b intersects
 			{
 				if ((a->name == "Player" || a->name == "Enemy") && b->name == "Wall")
 				{
@@ -60,14 +60,14 @@ void mechanic::tick(std::list<entity*>& entities)
 		}
 
 	}
-	e->update();
+	//delete bullets that crossed the border
 	auto it = entities.begin();
 	while (it != entities.end() && !entities.empty())
 	{
 
-		if ((*it)->isDead && ((*it)->name != "Player" || (*it)->name != "Enemy"))
+		if ((*it)->isDead && ((*it)->name == "BlueBullet" || (*it)->name == "RedBullet"))
 		{
-
+			delete (*it);
 			it = entities.erase(it);
 		}
 		else
@@ -120,6 +120,16 @@ void mechanic::input(std::list<entity*>& entities)
 
 void mechanic::restart(std::list<entity*>& entities)
 {
+	auto it = entities.begin();
+	advance(it, 2);
+	//memory clearing
+	while (it != entities.end() && !entities.empty())
+	{
+			delete (*it);
+			it = entities.erase(it);
+	}
+
+
 	entities.clear();
 	p->setPosition(500, 600);
 	e->setPosition(200, 200);
@@ -137,14 +147,14 @@ void mechanic::restart(std::list<entity*>& entities)
 	advantage = 0;
 }
 
-
+//ricochet
 void mechanic::Collision(bullet& b, wall& w){
 	b.timer--;
 	b.x -= 2.5 * b.dx;
 	b.y -= 2.5 * b.dy;
 	double Dx = b.x - w.x;
 	double Dy = b.y - w.y;
-	double d = sqrt(Dx * Dx + Dy * Dy);      if (d == 0) d = 0.01;                 // во избежании деления на ноль
+	double d = sqrt(Dx * Dx + Dy * Dy);      if (d == 0) d = 0.01;                 // to avoid division by 0
 	double ax = Dx / d;
 	double ay = Dy / d;
 
@@ -152,7 +162,6 @@ void mechanic::Collision(bullet& b, wall& w){
 	double Vn2 = b.dx * ax + b.dy * ay;
 
 
-	////////основная часть, находим новые скорости после столкновения
 	Dx = b.x - w.x;
 	Dy = b.y - w.y;
 	d = sqrt(Dx * Dx + Dy * Dy);  if (d == 0) d = 0.01;
@@ -174,7 +183,7 @@ void mechanic::Collision(bullet& b, wall& w){
 
 
 void mechanic::Collision(bullet& b, unit& u) {
-	//std::cout << "dead" << std::endl;
+	
 	b.isDead = true;
 	u.isDead = true;
 
@@ -183,7 +192,7 @@ void mechanic::Collision(bullet& b, unit& u) {
 
 void mechanic::Collision(wall& w, unit& u) {
 
-	//std::cout << "collision" << std::endl;
+	
 
 	if (u.x < w.x)
 	{
@@ -211,13 +220,13 @@ void mechanic::Collision(wall& w, unit& u) {
 }
 
 void mechanic::ENlogic(std::list<entity*>& entities) {
-	if (e->isReload())
+	if (e->isReload()) //to slow down the shooting
 		advantage++;
 
 	float Dx = e->x - p->x;
 	float Dy = e->y - p->y;
 
-	//Поворачивается лицом
+	//rotate to player
 
 
 	float rotation = (atan2(Dy, Dx)) * RADTODEG - e->angle + 180;
@@ -242,15 +251,14 @@ void mechanic::ENlogic(std::list<entity*>& entities) {
 
 
 
-	//std::cout << rotation << " Rot " << "\n";
 
 
-	//Держим безопасную дистанцию
+	//keeps the distance
 	int oldThrust = 0;
 
 	float d = sqrt(Dx * Dx + Dy * Dy); if (d == 0) d = 0.01;
 
-	std::cout << d << " diam " << std::endl;
+	
 	if (d <= 225 && d >= 200 || d <= 290 && d >= 275) {
 		oldThrust = e->thrust;
 	}
@@ -269,9 +277,6 @@ void mechanic::ENlogic(std::list<entity*>& entities) {
 			e->thrust = -1;
 	} 
 	else e->thrust = 0;
-
-
-
 
 
 }

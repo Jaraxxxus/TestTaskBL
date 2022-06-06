@@ -14,7 +14,6 @@ entity::entity(std::string textureName, float x, float y) {
 	height = texture.getSize().y;
 	sprite.setOrigin(width / 2, height / 2);
 	dx = dy = 0;
-	shift_x = shift_y = 0;
 	
 	
 }

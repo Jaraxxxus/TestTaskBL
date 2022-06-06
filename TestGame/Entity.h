@@ -12,11 +12,11 @@
 class entity
 {
 public:
-	const float DEGTORAD = 0.017453f;
+	const float DEGTORAD = 0.017453f;  //for degree to radian
 	std::string name;
 	float angle = 0;
 	
-	int thrust = 0;
+	
 	float x;
 	float y;
 	float dx, dy;
@@ -34,13 +34,13 @@ public:
 	virtual void setTexture(std::string _t);
 	virtual void update();
 	virtual void setPosition(float _x, float _y);
-	virtual  sf::FloatRect getRect();
+	virtual  sf::FloatRect getRect(); //creates a sprite based rectangle
 	
 
 protected:
 	sf::Texture texture;
 	sf::Sprite sprite;
-	float shift_x, shift_y;
+	
 	const int windowWidth = 800;
 	const int windowHeight = 800;
 

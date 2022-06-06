@@ -17,15 +17,15 @@ class Game  {
 public:
 	const int windowWidth = 800;
 	const int windowHeight = 800;
-	sf::Font font;//רנטפע 
+	sf::Font font; 
 
 	void run();
-	
+	~Game();
 private:
-	unit* p = nullptr;
-	unit* e = nullptr;
+	unit* p = nullptr;  //player ptr
+	unit* e = nullptr;  // enemy ptr
 
-	std::list<entity*> entities;
+	std::list<entity*> entities; 
 	
 
 };

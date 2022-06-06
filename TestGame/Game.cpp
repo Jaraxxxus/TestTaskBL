@@ -10,10 +10,10 @@ void Game::run() {
 	font.loadFromFile("fonts/arial.ttf");
 	sf::Text text("", font, 20);
 	text.setFillColor(sf::Color::Red);
-	// Главный цикл приложения: выполняется, пока открыто окно
+	
 	while (window.isOpen())
 	{
-		// Обрабатываем очередь событий в цикле
+		
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -27,13 +27,8 @@ void Game::run() {
 		}
 		
 
-
-
-
-
 		meh.tick(entities);
-		//std::cout << entities.size() << " Ent size" << std::endl;
-		// Отрисовка окна
+		
 		window.clear(sf::Color(250, 220, 100, 0));
 		for (auto a : entities)
 		{
@@ -41,21 +36,19 @@ void Game::run() {
 
 		}
 
-
-
-
 		text.setString(meh.getScore());
 		window.draw(text);
-
-
-
-
-
 		window.display();
 
 	}
 
 
+}
+
+Game::~Game()
+{
+	delete p;
+	delete e;
 }
 
 

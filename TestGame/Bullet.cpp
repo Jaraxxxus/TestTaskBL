@@ -18,8 +18,11 @@ bullet::bullet(float _x, float _y, float _angle, std::string _name) {
 	dx = (float)cos(angle * DEGTORAD) * 2.7;
 	dy = (float)sin(angle * DEGTORAD) * 2.7;
 
-	timer = 12;
-	x = _x + 8*dx;
+	timer = 12; // prevents bullets from getting into an infinite loop
+	
+				
+	//offset from the center of the sprite
+	x = _x + 8*dx;  
 	y = _y + 8*dy;
 }
 
@@ -29,8 +32,6 @@ void  bullet::update()
 
 {
 	std::cout << timer << std::endl;
-
-	
 	
 	if (!timer)
 		isDead = true;
@@ -38,9 +39,8 @@ void  bullet::update()
 	x += dx;
 	y += dy;
 
-
-
-	if (x > windowWidth || x < 0 || y > windowHeight || y < 0) isDead = true;
+	if (x > windowWidth || x < 0 || y > windowHeight || y < 0) //crossed the screen
+		isDead = true; 
 	sprite.setPosition(x, y);
 
 

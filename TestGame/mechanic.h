@@ -8,7 +8,7 @@
 #include "windows.h"
 
 
-const float RADTODEG = 180 / 3.14159265;
+const double RADTODEG = 180 / 3.14159265;
 
 
 class mechanic {
@@ -20,14 +20,14 @@ public:
 	std::string getScore();
 	
 private:
-	unit* p;
-	unit* e;
-	int advantage = 0;
-	int deathP = 0;
+	unit* p;  //player ptr
+	unit* e;  //enemy ptr
+	int advantage = 0; // additional time the enemy waits before shoot 
+	int deathP = 0; //player death count
 
-	int deathE = 0;
+	int deathE = 0;//npc  death count
 
-	void input(std::list<entity*>& entities);
+	void input(std::list<entity*>& entities); 
 
 	void restart(std::list<entity*>& entities);
 	
@@ -37,7 +37,7 @@ private:
 	
 	void Collision(wall& w, unit& u);
 	
-	void ENlogic(std::list<entity*>& entities);
+	void ENlogic(std::list<entity*>& entities); //enemy logic
 		
 };
 

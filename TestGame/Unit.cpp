@@ -10,23 +10,18 @@ unit::unit(std::string textureName, float x, float y)
 	this->y = y;
 	width = texture.getSize().x;
 	height = texture.getSize().y;
-	shift_x = x + width / 2;
-	shift_y = y + height / 2;
+	
 
 	sprite.setOrigin(sf::Vector2f(texture.getSize()) / 2.f);
 	dx = dy = 0;
 }
 
-bullet *unit::shoot()
-{
-	
+bullet *unit::shoot() 
+{	
 	bullet* b = new bullet(this->x , this->y, this->angle, bulletName);
 
 	reloadTime = 80;
-	
-	
-	
-	
+
 	return b;
 
 }
@@ -55,7 +50,7 @@ void unit::update()
 	checkBorder();
 	sprite.setPosition(x, y);
 	sprite.setRotation(angle+90);
-	oldangle = angle;
+	
 }
 
 void unit::setBname(std::string s)
@@ -69,8 +64,6 @@ void unit::checkBorder()
 	if (x > windowWidth) {
 		x -= dx;
 		dx = -dx;
-
-
 
 	};
 	if (x < 0)
@@ -101,3 +94,4 @@ bool unit::isReload()
 		return true;
 	return false;
 }
+
